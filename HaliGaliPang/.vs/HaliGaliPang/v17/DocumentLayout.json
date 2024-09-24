@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\mk051\\Desktop\\HaliGaliPang\\HaliGaliPang\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{03276D3E-A01F-453F-906D-63E48DFBC1BE}|HaliGaliPang\\HaliGaliPang.vcxproj|C:\\Users\\mk051\\Desktop\\HaliGaliPang\\HaliGaliPang\\HaliGaliPang\\Source.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{03276D3E-A01F-453F-906D-63E48DFBC1BE}|HaliGaliPang\\HaliGaliPang.vcxproj|solutionrelative:HaliGaliPang\\Source.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 238,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Source.c",
+              "DocumentMoniker": "C:\\Users\\mk051\\Desktop\\HaliGaliPang\\HaliGaliPang\\HaliGaliPang\\Source.c",
+              "RelativeDocumentMoniker": "HaliGaliPang\\Source.c",
+              "ToolTip": "C:\\Users\\mk051\\Desktop\\HaliGaliPang\\HaliGaliPang\\HaliGaliPang\\Source.c",
+              "RelativeToolTip": "HaliGaliPang\\Source.c",
+              "ViewState": "AQIAACUAAAAAAAAAAAAIwDcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-09-24T12:10:25.904Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
