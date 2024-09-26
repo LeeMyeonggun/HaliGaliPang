@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 #define UP 72
 #define LEFT 75
 #define RIGHT 77
@@ -35,6 +36,20 @@ typedef struct
 } Timer;
 
 
+typedef struct
+{
+	const int x;
+	const int y;
+	int score;
+
+} ScoreBoard;
+
+typedef struct
+{
+	const int x;
+	const int y;
+	
+} Bell;
 
 // 포지션을 잡아주는 함수
 void Position(int x, int y)
@@ -42,7 +57,7 @@ void Position(int x, int y)
 
 	COORD position = { x, y };
 
-	SetConsoleCursorPosition(GetstdHandle(STD_OUTPUT_HANDLE), position);
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
 
 }
 
@@ -93,64 +108,6 @@ void select_mode(int* time_increase, int* score_increase, int* score_decrease)
 
 
 
-void Set_Timebar_Position()
-{
-
-
-}
-
-void Set_Timer_Postion()
-{
-
-
-}
-
-void Set_Score_Postion()
-{
-
-
-}
-
-void Set_Bell_Position()
-{
-
-
-}
-
-
-
-
-
-
-
-int timer(int *passed_time, int *rest_time)
-{
-	*rest_time -= *passed_time;
-
-
-	position();
-	printf("%d", *rest_time);
-
-	return 0;
-
-}
-
-int display_card(char* card_shape[][])
-{
-	for (int j = 0; j < 3; j++)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			printf("%d", *card_shape[i][j]);
-		}
-		printf("\n");
-	}
-	
-
-	return 0;
-}
-
-
 
 int main()
 {
@@ -164,8 +121,13 @@ int main()
 	int is_collect = 0;
 	int num_card = 0;
 	int sum[] = { 0, 0, 0, 0 };
+	int score = 0;
+	
 
-
+	Timebar timebar = { 0, 0, rest_time };
+	Timer timer = { 122, 0, rest_time };
+	ScoreBoard scoreboard = { 122, 2, score };
+	Bell bell = { 60, 10 };
 
 
 	srand(time(NULL));
@@ -174,33 +136,45 @@ int main()
 	select_mode(&time_increase, &score_increase, &score_decrease);
 
 	
-	// 각 요소들의 위치를 정해줌 : 타임바, 타이머, 스코어, 종
-	Set_Timebar_Position();
-	Set_Timer_Position();
-	Set_Score_Position();
-	Set_Bell_Position();
-	
 
 	// 게임시작
 	while (1)
-	{
-
-		
+	{	
 		
 		// 타임바, 타이머, 스코어, 종 디스플레이
-		Display_Timebar();
-		Display_Timer();
-		Display_Score();
-		Display_Bell();
+		// Display_Timebar();
+		Position(timebar.x, timebar.y);
+		for (int i = 0; i < rest_time; i++)
+		{
+			
+			printf("■");
+
+		}
+		
+
+		// Display_Timer();
+		Position(timer.x, timer.y);
+		printf("%d", rest_time);
+
+
+		// Display_Score();
+		Position(scoreboard.x, scoreboard.y);
+		printf("Score : %d", score);
+
+		// Display_Bell();
+		Position(bell.x, bell.y);
+		
 
 		// 랜덤하게 뽑을 카드를 저장할 변수를 while문을 돌면서 초기화
-		char card_shape[CARDHEIGHT][CARDWIDTH] = { {'  ', '  ', '  '},
-												   {'  ', '  ', '  '},
-												   {'  ', '  ', '  '} };
+		int card_shape[CARDHEIGHT][CARDWIDTH] = { {0, 0, 0},
+												  {0, 0, 0},
+												  {0, 0, 0} };
 		int card_character[] = { 0 , 0 };
 
+
 		// 카드를 랜덤하게 뽑아주는 함수
-		Random_Card();
+		// 한번 나온 숫자가 다시 안 나오게하는 알고리즘 필요
+		// Random_Card();
 		
 		num_card = rand() % 56;
 		
@@ -209,7 +183,7 @@ int main()
 
 		case 1:
 		{
-			card_shape[1][1] = '●';
+			card_shape[1][1] =  1;
 			card_character[0] = 1;
 			card_character[1] = 1;
 
@@ -219,7 +193,7 @@ int main()
 
 		case 2:
 		{
-			card_shape[1][1] = '●';
+			card_shape[1][1] = 1;
 			card_character[0] = 1;
 			card_character[1] = 1;
 
@@ -229,7 +203,7 @@ int main()
 
 		case 3:
 		{
-			card_shape[1][1] = '●';
+			card_shape[1][1] = 1;
 			card_character[0] = 1;
 			card_character[1] = 1;
 
@@ -239,7 +213,7 @@ int main()
 
 		case 4:
 		{
-			card_shape[1][1] = '●';
+			card_shape[1][1] = 1;
 			card_character[0] = 1;
 			card_character[1] = 1;
 
@@ -249,7 +223,7 @@ int main()
 
 		case 5:
 		{
-			card_shape[1][1] = '●';
+			card_shape[1][1] = 1;
 			card_character[0] = 1;
 			card_character[1] = 1;
 
@@ -259,8 +233,8 @@ int main()
 
 		case 6:
 		{
-			card_shape[0][0] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 2;
 
@@ -270,8 +244,8 @@ int main()
 
 		case 7:
 		{
-			card_shape[0][0] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 2;
 
@@ -281,8 +255,8 @@ int main()
 
 		case 8:
 		{
-			card_shape[0][0] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 2;
 
@@ -292,9 +266,9 @@ int main()
 
 		case 9:
 		{
-			card_shape[0][0] = '●';
-			card_shape[1][1] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[1][1] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 3;
 
@@ -304,9 +278,9 @@ int main()
 
 		case 10:
 		{
-			card_shape[0][0] = '●';
-			card_shape[1][1] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[1][1] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 3;
 
@@ -316,9 +290,9 @@ int main()
 
 		case 11:
 		{
-			card_shape[0][0] = '●';
-			card_shape[1][1] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[1][1] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 3;
 
@@ -328,10 +302,10 @@ int main()
 
 		case 12:
 		{
-			card_shape[0][0] = '●';
-			card_shape[0][2] = '●';
-			card_shape[2][0] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[0][2] = 1;
+			card_shape[2][0] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 4;
 
@@ -341,10 +315,10 @@ int main()
 
 		case 13:
 		{
-			card_shape[0][0] = '●';
-			card_shape[0][2] = '●';
-			card_shape[2][0] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[0][2] = 1;
+			card_shape[2][0] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 4;
 
@@ -354,11 +328,11 @@ int main()
 
 		case 14:
 		{
-			card_shape[0][0] = '●';
-			card_shape[0][2] = '●';
-			card_shape[1][1] = '●';
-			card_shape[2][0] = '●';
-			card_shape[2][2] = '●';
+			card_shape[0][0] = 1;
+			card_shape[0][2] = 1;
+			card_shape[1][1] = 1;
+			card_shape[2][0] = 1;
+			card_shape[2][2] = 1;
 			card_character[0] = 1;
 			card_character[1] = 5;
 
@@ -368,7 +342,7 @@ int main()
 
 		case 15:
 		{
-			card_shape[1][1] = '■';
+			card_shape[1][1] = 2;
 			card_character[0] = 2;
 			card_character[1] = 1;
 
@@ -378,7 +352,7 @@ int main()
 
 		case 16:
 		{
-			card_shape[1][1] = '■';
+			card_shape[1][1] = 2;
 			card_character[0] = 2;
 			card_character[1] = 1;
 
@@ -388,7 +362,7 @@ int main()
 
 		case 17:
 		{
-			card_shape[1][1] = '■';
+			card_shape[1][1] = 2;
 			card_character[0] = 2;
 			card_character[1] = 1;
 
@@ -398,7 +372,7 @@ int main()
 
 		case 18:
 		{
-			card_shape[1][1] = '■';
+			card_shape[1][1] = 2;
 			card_character[0] = 2;
 			card_character[1] = 1;
 
@@ -408,7 +382,7 @@ int main()
 
 		case 19:
 		{
-			card_shape[1][1] = '■';
+			card_shape[1][1] = 2;
 			card_character[0] = 2;
 			card_character[1] = 1;
 
@@ -418,8 +392,8 @@ int main()
 
 		case 20:
 		{
-			card_shape[0][0] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 2;
 
@@ -429,8 +403,8 @@ int main()
 
 		case 21:
 		{
-			card_shape[0][0] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 2;
 
@@ -440,8 +414,8 @@ int main()
 
 		case 22:
 		{
-			card_shape[0][0] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 2;
 
@@ -451,9 +425,9 @@ int main()
 
 		case 23:
 		{
-			card_shape[0][0] = '■';
-			card_shape[1][1] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[1][1] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 3;
 
@@ -463,9 +437,9 @@ int main()
 
 		case 24:
 		{
-			card_shape[0][0] = '■';
-			card_shape[1][1] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[1][1] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 3;
 
@@ -475,9 +449,9 @@ int main()
 
 		case 25:
 		{
-			card_shape[0][0] = '■';
-			card_shape[1][1] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[1][1] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 3;
 
@@ -487,10 +461,10 @@ int main()
 
 		case 26:
 		{
-			card_shape[0][0] = '■';
-			card_shape[0][2] = '■';
-			card_shape[2][0] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[0][2] = 2;
+			card_shape[2][0] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 4;
 
@@ -500,10 +474,10 @@ int main()
 
 		case 27:
 		{
-			card_shape[0][0] = '■';
-			card_shape[0][2] = '■';
-			card_shape[2][0] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[0][2] = 2;
+			card_shape[2][0] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 4;
 
@@ -513,11 +487,11 @@ int main()
 
 		case 28:
 		{
-			card_shape[0][0] = '■';
-			card_shape[0][2] = '■';
-			card_shape[1][1] = '■';
-			card_shape[2][0] = '■';
-			card_shape[2][2] = '■';
+			card_shape[0][0] = 2;
+			card_shape[0][2] = 2;
+			card_shape[1][1] = 2;
+			card_shape[2][0] = 2;
+			card_shape[2][2] = 2;
 			card_character[0] = 2;
 			card_character[1] = 5;
 
@@ -527,7 +501,7 @@ int main()
 
 		case 29:
 		{
-			card_shape[1][1] = '▲';
+			card_shape[1][1] = 3;
 			card_character[0] = 3;
 			card_character[1] = 1;
 
@@ -537,7 +511,7 @@ int main()
 
 		case 30:
 		{
-			card_shape[1][1] = '▲';
+			card_shape[1][1] = 3;
 			card_character[0] = 3;
 			card_character[1] = 1;
 
@@ -547,7 +521,7 @@ int main()
 
 		case 31:
 		{
-			card_shape[1][1] = '▲';
+			card_shape[1][1] = 3;
 			card_character[0] = 3;
 			card_character[1] = 1;
 
@@ -557,7 +531,7 @@ int main()
 
 		case 32:
 		{
-			card_shape[1][1] = '▲';
+			card_shape[1][1] = 3;
 			card_character[0] = 3;
 			card_character[1] = 1;
 
@@ -567,7 +541,7 @@ int main()
 
 		case 33:
 		{
-			card_shape[1][1] = '▲';
+			card_shape[1][1] = 3;
 			card_character[0] = 3;
 			card_character[1] = 1;
 
@@ -577,8 +551,8 @@ int main()
 
 		case 34:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 2;
 
@@ -588,8 +562,8 @@ int main()
 
 		case 35:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 2;
 			card_character[1] = 2;
 
@@ -599,8 +573,8 @@ int main()
 
 		case 36:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 2;
 
@@ -610,9 +584,9 @@ int main()
 
 		case 37:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[1][1] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[1][1] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 3;
 
@@ -622,9 +596,9 @@ int main()
 
 		case 38:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[1][1] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[1][1] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 3;
 
@@ -634,9 +608,9 @@ int main()
 
 		case 39:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[1][1] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[1][1] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 3;
 
@@ -646,10 +620,10 @@ int main()
 
 		case 40:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[0][2] = '▲';
-			card_shape[2][0] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[0][2] = 3;
+			card_shape[2][0] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 4;
 
@@ -659,10 +633,10 @@ int main()
 
 		case 41:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[0][2] = '▲';
-			card_shape[2][0] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[0][2] = 3;
+			card_shape[2][0] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 4;
 
@@ -672,11 +646,11 @@ int main()
 
 		case 42:
 		{
-			card_shape[0][0] = '▲';
-			card_shape[0][2] = '▲';
-			card_shape[1][1] = '▲';
-			card_shape[2][0] = '▲';
-			card_shape[2][2] = '▲';
+			card_shape[0][0] = 3;
+			card_shape[0][2] = 3;
+			card_shape[1][1] = 3;
+			card_shape[2][0] = 3;
+			card_shape[2][2] = 3;
 			card_character[0] = 3;
 			card_character[1] = 5;
 
@@ -686,7 +660,7 @@ int main()
 
 		case 43:
 		{
-			card_shape[1][1] = '★';
+			card_shape[1][1] = 4;
 			card_character[0] = 4;
 			card_character[1] = 1;
 
@@ -696,7 +670,7 @@ int main()
 
 		case 44:
 		{
-			card_shape[1][1] = '★';
+			card_shape[1][1] = 4;
 			card_character[0] = 4;
 			card_character[1] = 1;
 
@@ -706,7 +680,7 @@ int main()
 
 		case 45:
 		{
-			card_shape[1][1] = '★';
+			card_shape[1][1] = 4;
 			card_character[0] = 4;
 			card_character[1] = 1;
 
@@ -716,7 +690,7 @@ int main()
 
 		case 46:
 		{
-			card_shape[1][1] = '★';
+			card_shape[1][1] = 4;
 			card_character[0] = 4;
 			card_character[1] = 1;
 
@@ -726,7 +700,7 @@ int main()
 
 		case 47:
 		{
-			card_shape[1][1] = '★';
+			card_shape[1][1] = 4;
 			card_character[0] = 4;
 			card_character[1] = 1;
 
@@ -736,8 +710,8 @@ int main()
 
 		case 48:
 		{
-			card_shape[0][0] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 2;
 
@@ -747,8 +721,8 @@ int main()
 
 		case 49:
 		{
-			card_shape[0][0] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 2;
 
@@ -758,8 +732,8 @@ int main()
 
 		case 50:
 		{
-			card_shape[0][0] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 2;
 
@@ -769,9 +743,9 @@ int main()
 
 		case 51:
 		{
-			card_shape[0][0] = '★';
-			card_shape[1][1] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[1][1] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 3;
 
@@ -781,9 +755,9 @@ int main()
 
 		case 52:
 		{
-			card_shape[0][0] = '★';
-			card_shape[1][1] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[1][1] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 3;
 
@@ -793,9 +767,9 @@ int main()
 
 		case 53:
 		{
-			card_shape[0][0] = '★';
-			card_shape[1][1] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[1][1] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 3;
 
@@ -805,10 +779,10 @@ int main()
 
 		case 54:
 		{
-			card_shape[0][0] = '★';
-			card_shape[0][2] = '★';
-			card_shape[2][0] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[0][2] = 4;
+			card_shape[2][0] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 4;
 
@@ -818,10 +792,10 @@ int main()
 
 		case 55:
 		{
-			card_shape[0][0] = '★';
-			card_shape[0][2] = '★';
-			card_shape[2][0] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[0][2] = 4;
+			card_shape[2][0] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 4;
 
@@ -831,11 +805,11 @@ int main()
 
 		case 56:
 		{
-			card_shape[0][0] = '★';
-			card_shape[0][2] = '★';
-			card_shape[1][1] = '★';
-			card_shape[2][0] = '★';
-			card_shape[2][2] = '★';
+			card_shape[0][0] = 4;
+			card_shape[0][2] = 4;
+			card_shape[1][1] = 4;
+			card_shape[2][0] = 4;
+			card_shape[2][2] = 4;
 			card_character[0] = 4;
 			card_character[1] = 5;
 
@@ -846,72 +820,128 @@ int main()
 	}
 
 		// 카드의 위치를 정해주고 디스플레이
-		Set_Postion_Card();
-	
-
-		Display_Card();
-
-
-
-		// 현재까지 나온 모든 카드의 문양별 갯수의 합을 저장하는 함수
-		// 종을 눌렀을 때 검사
-		Calc_Sum();
+		// Set_Postion_Card();
 		
-		switch (card_character[0])
+		// Display_Card();
+		for (int j = 0; j < 3; j++)
 		{
-		case 1 : sum[0] += card_character[1];
-
-		case 2: sum[1] += card_character[1];
-
-		case 3: sum[2] += card_character[1];
-
-		case 4: sum[3] += card_character[1];
-
-		}
-
-		// 종을 누르는 인풋을 받는 단계
-		if (_kbhit)
-		{
-			hit = _getch();
-
-			if (hit == -32);
+			for (int i = 0; i < 3; i++)
 			{
-				hit = _getch();
-			}
-
-
-			// 엔터가 눌러졌을 때 맞는 조건인지 확인하는 부분
-			switch (hit)
-			{
-			case ENTER:
-				if (sum[0] % 5 == 0 | sum[1] % 5 == 0 | sum[2] % 5 == 0 | sum[3] % 5 == 0)
+				switch (card_shape[i][j])
 				{
-					is_collect = 1;
-				}
-				else
-				{
-					is_collect = 0;
+					case 1:
+					{
+					Position(passed_time * 9 + i, 3 + j);
+					printf("●");
+					break;
+					}
+					case 2:
+					{
+						Position(passed_time * 9 + i, 3 + j);
+						printf("■");
+						break;
+					}
+					case 3:
+					{
+						Position(passed_time * 9 + i, 3 + j);
+						printf("▲");
+						break;
+					}
+					case 4:
+					{
+						Position(passed_time * 9 + i, 3 + j);
+						printf("★");
+						break;
+					}
+					default:
+					{
+						Position(passed_time * 9 + i, 3 + j);
+						printf("  ");
+						
+					}
 				}
 				
-				break;
 
-			default:
-				break;
 			}
-
 			
-
-
+			Position(passed_time, 4 + j);
 		}
 
 
-		// is_collec에 따라 플레이 시간(수정하면 자동으로 남은 시간 변경) 및 점수 수정하는 함수
+		 // 현재까지 나온 모든 카드의 문양별 갯수의 합을 저장하는 함수
+		 // 종을 눌렀을 때 검사
+		 // Calc_Sum();
+		 
+		 switch (card_character[0])
+		 {
+		 case 1 : sum[0] += card_character[1];
+		 
+		 case 2: sum[1] += card_character[1];
+		 
+		 case 3: sum[2] += card_character[1];
+		 
+		 case 4: sum[3] += card_character[1];
+		 
+		 }
+		 
+		 // 종을 누르는 인풋을 받는 단계
+		 if (_kbhit)
+		 {
+		 	hit = _getch();
+		 
+		 	if (hit == -32);
+		 	{
+		 		hit = _getch();
+		 	}
+		 
+		 
+		 	// 엔터가 눌러졌을 때 맞는 조건인지 확인하는 부분
+		 	switch (hit)
+		 	{
+		 	case ENTER:
+		 		if (sum[0] % 5 == 0 | sum[1] % 5 == 0 | sum[2] % 5 == 0 | sum[3] % 5 == 0)
+		 		{
+		 			is_collect = 1;
+		 		}
+		 		else
+		 		{
+		 			is_collect = 0;
+		 		}
+		 		
+		 		break;
+		 
+		 	default:
+		 		break;
+		 	}
+		 
+		 	
+		 
+		 
+		 }
+		 
+		 
+		 // is_collect에 따라 플레이 시간(수정하면 자동으로 남은 시간 변경) 및 점수 수정하는 함수
+		 
+		 if (is_collect == 1)
+		 {
+		 	score += score_increase;
+		 	passed_time -= time_increase;
+		 
+		 }
+		 else
+		 {
+		 	score -= score_decrease;
+		 	
+		 }
 
 
 
-		sleep(1000);
+		Sleep(1000);
 		
-		passed_time++
+		passed_time++;
+		rest_time--;
+
+		system("cls");
 
 	}
 
