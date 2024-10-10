@@ -325,6 +325,13 @@ int main()
 	system("cls");
 
 
+	
+	Position(45, 5);
+	printf("Push Space 5, 10, 15, ... shape gather!");
+	
+
+	Sleep(1000);
+	system("cls");
 
 
 	// 게임시작
@@ -1523,7 +1530,7 @@ int main()
 			}
 			else // 5의 배수가 아닐 경우 점수 감소
 			{
-				if (score > score_decrease)
+				if (score >= score_decrease)
 				{
 					score -= score_decrease;
 					is_collect = 0;
@@ -1584,12 +1591,13 @@ int main()
 
 	}
 
-
-	// 게임이 끝났을 경우 표시되며 획득한 스코어를 화면에 출력
-	Position(45, 8);
-	setColor(7);
-	printf("game over! your score is %d.", score);
-
+	while (1)
+	{
+		// 게임이 끝났을 경우 표시되며 획득한 스코어를 화면에 출력
+		Position(45, 8);
+		setColor(7);
+		printf("game over! your score is %d.", score);
+	}
 
 
 
